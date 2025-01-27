@@ -9,8 +9,6 @@ export class MongooseFactory {
     async create(url: string) {
         const { connection } = await mongoose.connect(url);
 
-        console.log(connection);
-
         await this.initModels(connection);
 
         Logger.info('Mongoose created!');
