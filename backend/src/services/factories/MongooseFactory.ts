@@ -7,9 +7,7 @@ import { Logger } from '@/services/common/Logger';
 @Service()
 export class MongooseFactory {
     async create(url: string) {
-        console.log(url);
         const { connection } = await mongoose.connect(url);
-        console.log(true);
 
         console.log(connection);
 

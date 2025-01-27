@@ -1,6 +1,8 @@
 import { Service } from 'typedi';
 import { createClient } from 'redis';
 
+import { Logger } from '@/services/common/Logger';
+
 @Service()
 export class RedisClientFactory {
     async create(url: string) {
@@ -8,7 +10,7 @@ export class RedisClientFactory {
 
         await redisClient.connect();
 
-        console.info('Redis client instance connected!');
+        Logger.info('Redis client instance connected!');
 
         return redisClient;
     }

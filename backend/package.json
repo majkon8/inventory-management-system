@@ -14,7 +14,6 @@
         "dc-up": "docker-compose up -d",
         "dc-down": "docker-compose down",
         "dev": "ts-node-dev --respawn --transpile-only src/bin/server.ts",
-        "db-migrate": "node --require ts-node/register src/scripts/db-migrate.ts",
         "eslint": "eslint . --fix --cache --ignore-path=.gitignore",
         "type-check": "tsc --noEmit",
         "prettier": "prettier --write .",

@@ -35,6 +35,14 @@ export class RedisManager<IRedis extends Record<string, unknown>> {
         }
     }
 
+    async forget(key: keyof IRedis) {
+        if (!this.isEnabled) {
+            return;
+        }
+
+        await this.redis.del(key as string);
+    }
+
     async exists(key: string): Promise<boolean> {
         if (!this.isEnabled) {
             return new Promise(resolve => resolve(false));
@@ -43,5 +51,37 @@ export class RedisManager<IRedis extends Record<string, unknown>> {
         const exists = await this.redis.exists(key);
 
         return !!exists;
+    }
+
+    async eachScan(pattern: string) {
+        const keys: Array<keyof IRedis> = [];
+        let cursor = 0;
+
+        do {
+            const { cursor: newCursor, keys: matchingKeys } = await this.redis.scan(cursor, { MATCH: pattern });
+
+            cursor = newCursor;
+            keys.push(...matchingKeys);
+        } while (cursor != 0);
+
+        return keys;
+    }
+
+    async runActionOnKeyPattern(pattern: string, callback: (matchingKeys: Array<keyof IRedis>) => Promise<void>) {
+        const keys = await this.eachScan(pattern);
+
+        await callback(keys);
+    }
+
+    forgetByPattern(pattern: string) {
+        if (!this.isEnabled) {
+            return;
+        }
+
+        return this.runActionOnKeyPattern(pattern, async keys => {
+            for (const key of keys) {
+                await this.forget(key);
+            }
+        });
     }
 }

@@ -6,19 +6,6 @@ import { Logger } from '@/services/common/Logger';
 import type { RedisScripts, RedisModules, RedisFunctions, RedisClientType } from 'redis';
 
 export const shutdown = async (killProcess = false, status = 0) => {
-    if (Container.has('mongoose')) {
-        try {
-            Logger.info('Shutting down MongoDB connection...');
-
-            const mongoose: MongooseConnection = Container.get('mongoose');
-            await mongoose.destroy();
-
-            Logger.info('MongoDB connection closed!');
-        } catch {
-            console.error('There was an error during shutting down mongoose connection!');
-        }
-    }
-
     if (Container.has('redisCacheClient')) {
         try {
             Logger.info('Shutting down cache Redis connection...');
@@ -30,6 +17,19 @@ export const shutdown = async (killProcess = false, status = 0) => {
             Logger.info('Cache Redis connection closed!');
         } catch {
             console.error('There was an error during shutting down redis cache connection!');
+        }
+    }
+
+    if (Container.has('mongoose')) {
+        try {
+            Logger.info('Shutting down MongoDB connection...');
+
+            const mongoose: MongooseConnection = Container.get('mongoose');
+            await mongoose.destroy();
+
+            Logger.info('MongoDB connection closed!');
+        } catch {
+            console.error('There was an error during shutting down mongoose connection!');
         }
     }
 

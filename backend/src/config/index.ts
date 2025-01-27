@@ -32,16 +32,6 @@ export const config: IConfig = {
         url: parseUrl(env('APP_URL', 'http://127.0.0.1:3000')),
         corsSites: env('CORS_SITES')
     },
-    mongo: {
-        url: `mongodb://${env('MONGO_USERNAME')}:${env('MONGO_PASSWORD')}@${env('MONGO_HOST')}:${env(
-            'MONGO_PORT'
-        )}/${env('MONGO_DATABASE')}?authSource=admin`,
-        username: env('MONGO_USERNAME'),
-        password: env('MONGO_PASSWORD'),
-        database: env('MONGO_DATABASE'),
-        host: env('MONGO_HOST'),
-        port: parseInt(env('MONGO_PORT'))
-    },
     redisCache: {
         url: `redis://:${env('REDIS_CACHE_PASS')}@${env('REDIS_CACHE_HOST')}:${env('REDIS_CACHE_PORT')}`,
         host: env('REDIS_CACHE_HOST'),
@@ -52,5 +42,15 @@ export const config: IConfig = {
     cache: {
         isEnabled: isEnabled('CACHE_ENABLED'),
         keyExpiresInMinutes: parseInt(env('CACHE_KEY_EXPIRES_IN_MINUTES'))
+    },
+    mongo: {
+        url: `mongodb://${env('MONGO_USERNAME')}:${env('MONGO_PASSWORD')}@${env('MONGO_HOST')}:${env(
+            'MONGO_PORT'
+        )}/${env('MONGO_DATABASE')}?authSource=admin`,
+        username: env('MONGO_USERNAME'),
+        password: env('MONGO_PASSWORD'),
+        database: env('MONGO_DATABASE'),
+        host: env('MONGO_HOST'),
+        port: parseInt(env('MONGO_PORT'))
     }
 };

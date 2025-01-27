@@ -7,15 +7,6 @@ export interface IAppConfig {
     corsSites: string;
 }
 
-export interface IMongoConfig {
-    username: string;
-    password: string;
-    database: string;
-    host: string;
-    port: number;
-    url: string;
-}
-
 export interface IRedisConfig {
     url: string;
     host: string;
@@ -29,9 +20,18 @@ export interface ICacheConfig {
     keyExpiresInMinutes: number;
 }
 
+export interface IMongoConfig {
+    username: string;
+    password: string;
+    database: string;
+    host: string;
+    port: number;
+    url: string;
+}
+
 export interface IConfig {
     app: IAppConfig;
-    mongo: IMongoConfig;
     redisCache: IRedisConfig;
     cache: ICacheConfig;
+    mongo: IMongoConfig;
 }
