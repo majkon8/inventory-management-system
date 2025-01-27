@@ -1,0 +1,6 @@
+.env
+.env.test
+node_modules
+package-lock.json
+dist
+envs/\.*.env

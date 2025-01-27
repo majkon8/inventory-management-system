@@ -1,0 +1,38 @@
+volumes:
+    mongo.data:
+    redis_cache.data:
+
+services:
+    redis_cache:
+        image: ${COMPOSE_PROJECT_NAME}/redis_cache
+        container_name: ${COMPOSE_PROJECT_NAME}.redis_cache.docker
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./redis.Dockerfile
+        env_file: envs/redis_cache.env
+        volumes:
+            - redis_cache.data:/data
+        ports:
+            - 127.0.0.1:${REDIS_CACHE_PORT}:${REDIS_CACHE_PORT}
+        networks:
+            - network
+
+    mongo:
+        image: ${COMPOSE_PROJECT_NAME}/mongo
+        container_name: ${COMPOSE_PROJECT_NAME}.mongo.docker
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./mongo.Dockerfile
+        env_file: envs/mongo.env
+        volumes:
+            - mongo.data:/data/db
+        ports:
+            - 127.0.0.1:${MONGO_PORT}:${MONGO_PORT}
+        networks:
+            - network
+
+networks:
+    network:
+        driver: bridge
