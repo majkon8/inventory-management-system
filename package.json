@@ -1,0 +1,24 @@
+{
+    "name": "inventory-management-system",
+    "author": "Mikołaj Kozera",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "eslint-backend": "cd backend; npm run eslint; npm run type-check",
+        "prettier-backend": "cd backend; npm run prettier",
+        "eslint-check": "npm run eslint-backend"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@rushstack/eslint-patch": "1.7.1",
+        "@typescript-eslint/eslint-plugin": "6.19.1",
+        "@typescript-eslint/parser": "6.19.1",
+        "eslint": "8.57.0",
+        "eslint-config-prettier": "9.1.0",
+        "eslint-import-resolver-typescript": "3.6.1",
+        "eslint-plugin-import": "2.29.1",
+        "eslint-plugin-perfectionist": "2.5.0",
+        "prettier": "3.2.4"
+    }
+}
