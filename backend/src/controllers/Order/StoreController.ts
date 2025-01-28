@@ -81,6 +81,6 @@ export class StoreController {
 
         await Promise.all([this.cacheManager.forgetByPattern(`products:index`)]);
 
-        return response.sendStatus(StatusCodes.NO_CONTENT);
+        return response.sendStatus(StatusCodes.CREATED);
     }
 }
