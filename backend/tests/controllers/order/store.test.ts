@@ -6,14 +6,14 @@ import { ENDPOINTS } from '@tests/endpoints';
 import { OrderFactory } from '@/factories/Order';
 import { ProductFactory } from '@/factories/Product';
 
-import type { IProduct } from '@/types/mongo';
+import type { ProductDocument } from '@/types/mongo';
 
 const { BASE: ORDERS_BASE } = ENDPOINTS.ORDERS;
 const { BASE: PRODUCTS_BASE } = ENDPOINTS.PRODUCTS;
 
 describe(`POST "${ORDERS_BASE}"`, () => {
-    let productOne: IProduct;
-    let productTwo: IProduct;
+    let productOne: ProductDocument;
+    let productTwo: ProductDocument;
 
     beforeAll(async () => {
         productOne = await ProductFactory.create();
@@ -87,7 +87,7 @@ describe(`POST "${ORDERS_BASE}"`, () => {
             ]
         };
 
-        const { statusCode, body } = await request.post(ORDERS_BASE).send(orderData);
+        const { statusCode } = await request.post(ORDERS_BASE).send(orderData);
 
         expect(statusCode).toBe(StatusCodes.NOT_FOUND);
     });
