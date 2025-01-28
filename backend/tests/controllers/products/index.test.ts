@@ -5,13 +5,13 @@ import { StatusCodes } from 'http-status-codes';
 import { ENDPOINTS } from '@tests/endpoints';
 import { ProductFactory } from '@/factories/Product';
 
-import type { IProduct } from '@/types/mongo';
+import type { ProductDocument } from '@/types/mongo';
 
 const { BASE } = ENDPOINTS.PRODUCTS;
 
 describe(`GET "${BASE}"`, () => {
-    let productOne: IProduct;
-    let productTwo: IProduct;
+    let productOne: ProductDocument;
+    let productTwo: ProductDocument;
 
     beforeAll(async () => {
         productOne = await ProductFactory.create();

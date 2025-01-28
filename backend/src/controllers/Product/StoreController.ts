@@ -1,30 +1,28 @@
+import { Service } from 'typedi';
 import { Response } from 'express';
-import { Inject, Service } from 'typedi';
 import { StatusCodes } from 'http-status-codes';
 
-import { RedisManager } from '@/services/redis/RedisManager';
-import { ProductRepository } from '@/repositories/ProductRepository';
+import { ProductCommandService } from '@/services/command/ProductCommandService';
 
-import type { ICacheRedis } from '@/types/redis';
 import type { IStoreRequest } from '@/types/product';
 
 @Service()
 export class StoreController {
-    constructor(
-        @Inject('cacheManager')
-        private readonly cacheManager: RedisManager<ICacheRedis>,
-        private readonly productRepository: ProductRepository
-    ) {}
+    constructor(private readonly productCommandService: ProductCommandService) {}
 
     async invoke(request: IStoreRequest, response: Response) {
         const {
             body: { name, description, price, stock }
         } = request;
 
-        const createdProduct = await this.productRepository.create({ name, description, price, stock });
+        try {
+            const createdProduct = await this.productCommandService.createProduct({ name, description, price, stock });
 
-        await Promise.all([this.cacheManager.forgetByPattern(`products:index`)]);
+            return response.status(StatusCodes.CREATED).send(createdProduct);
+        } catch (error) {
+            console.error('Error creating product:', error);
 
-        return response.status(StatusCodes.CREATED).send(createdProduct);
+            return response.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Error creating product');
+        }
     }
 }

@@ -1,32 +1,22 @@
-import { Inject, Service } from 'typedi';
+import { Service } from 'typedi';
 import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
-import { RedisManager } from '@/services/redis/RedisManager';
-import { ProductRepository } from '@/repositories/ProductRepository';
-
-import type { ICacheRedis } from '@/types/redis';
+import { ProductQueryService } from '@/services/query/ProductQuaryService';
 
 @Service()
 export class IndexController {
-    constructor(
-        @Inject('cacheManager')
-        private readonly cacheManager: RedisManager<ICacheRedis>,
-        private readonly productRepository: ProductRepository
-    ) {}
+    constructor(private readonly productQueryService: ProductQueryService) {}
 
     async invoke(request: Request, response: Response) {
-        const cacheKey = `products:index`;
+        try {
+            const products = await this.productQueryService.getAllProducts();
 
-        if (await this.cacheManager.exists(cacheKey)) {
-            const products = await this.cacheManager.get(cacheKey);
+            return response.status(StatusCodes.OK).send(products);
+        } catch (error) {
+            console.error('Error fetching products:', error);
 
-            return response.send(products);
+            return response.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Error fetching products');
         }
-
-        const products = await this.productRepository.findAll();
-
-        await this.cacheManager.set(cacheKey, products);
-
-        return response.send(products);
     }
 }

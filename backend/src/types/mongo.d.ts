@@ -1,3 +1,5 @@
+import { Document } from 'mongoose';
+
 export type IFlattenObjectKeys<T, Key = keyof T> = Key extends string
     ? T[Key] extends Record<string, unknown>
         ? `${Key}.${IFlattenObjectKeys<T[Key]>}`
@@ -18,6 +20,8 @@ export interface IProduct extends BaseDocument {
     price: number;
     stock: number;
 }
+
+export type ProductDocument = IProduct & Document;
 
 export interface IOrder extends BaseDocument {
     customerId: string;

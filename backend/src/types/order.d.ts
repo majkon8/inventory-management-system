@@ -1,5 +1,4 @@
 import type { Request } from 'express';
-import type { IOrder } from '@/types/mongo';
 
 export interface IProductOrderData extends BaseDocument {
     id: string;
