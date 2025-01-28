@@ -6,22 +6,22 @@ import { Logger } from '@/services/common/Logger';
 
 @Service()
 export class MongooseFactory {
-    async create(url: string) {
-        const { connection } = await mongoose.connect(url, {
+    async create(url: string, isRead: boolean) {
+        const connection = mongoose.createConnection(url, {
             retryWrites: true,
             w: 'majority'
         });
 
-        await this.initModels(connection);
+        await this.initModels(connection, isRead);
 
         Logger.info('Mongoose created!');
 
         return connection;
     }
 
-    private async initModels(connection: Connection) {
+    private async initModels(connection: Connection, isRead: boolean) {
         const extension = __filename.split('.').pop() || 'ts';
-        const modelsDirectory = `${__dirname}/../../models`;
+        const modelsDirectory = isRead ? `${__dirname}/../../models/read` : `${__dirname}/../../models/write`;
         const fsItems: string[] = await readdir(modelsDirectory);
 
         for (const item of fsItems) {

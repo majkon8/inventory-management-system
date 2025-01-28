@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
-import type { IProduct } from '@/types/mongo';
+import type { IProductRead } from '@/types/mongo';
 
-export const productSchema = new Schema<IProduct>(
+export const productReadSchema = new Schema<IProductRead>(
     {
         name: {
             type: String,
@@ -17,12 +17,12 @@ export const productSchema = new Schema<IProduct>(
         price: {
             type: Number,
             required: true,
-            min: 0
+            min: [0, 'Price must be positive']
         },
         stock: {
             type: Number,
             required: true,
-            min: 0
+            min: [0, 'Stock must be positive']
         }
     },
     {

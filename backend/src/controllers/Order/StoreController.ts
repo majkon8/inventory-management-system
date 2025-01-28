@@ -2,7 +2,7 @@ import { Service } from 'typedi';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { OrderCommandService } from '@/services/command/OrderCommandService';
+import { OrderCommandService } from '@/services/commands/OrderCommandService';
 
 import type { IStoreRequest } from '@/types/order';
 

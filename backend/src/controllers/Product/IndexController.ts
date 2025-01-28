@@ -2,7 +2,7 @@ import { Service } from 'typedi';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { ProductQueryService } from '@/services/query/ProductQuaryService';
+import { ProductQueryService } from '@/services/queries/ProductQuaryService';
 
 @Service()
 export class IndexController {

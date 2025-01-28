@@ -24,9 +24,20 @@ export interface IMongoConfig {
     username: string;
     password: string;
     database: string;
-    host: string;
-    port: number;
+    writeUrl: string;
+    readUrl: string;
+    username: string;
+    password: string;
+    database: string;
+    writeHost: string;
+    writePort: number;
+    readHost: string;
+    readPort: number;
+}
+
+export interface IRabbitMQConfig {
     url: string;
+    timeout: number;
 }
 
 export interface IConfig {
@@ -34,4 +45,5 @@ export interface IConfig {
     redisCache: IRedisConfig;
     cache: ICacheConfig;
     mongo: IMongoConfig;
+    rabbitmq: IRabbitMQConfig;
 }

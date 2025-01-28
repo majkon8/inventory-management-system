@@ -1,8 +1,8 @@
 import { Schema } from 'mongoose';
 
-import type { IOrder } from '@/types/mongo';
+import type { IOrderWrite } from '@/types/mongo';
 
-export const orderSchema = new Schema<IOrder>(
+export const orderWriteSchema = new Schema<IOrderWrite>(
     {
         customerId: {
             type: String,

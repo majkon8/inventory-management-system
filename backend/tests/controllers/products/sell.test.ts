@@ -1,36 +1,43 @@
 import 'reflect-metadata';
 
+import Container from 'typedi';
 import { StatusCodes } from 'http-status-codes';
 
 import { ENDPOINTS } from '@tests/endpoints';
 import { ProductFactory } from '@/factories/Product';
+import { Publisher } from '@/services/queues/Publisher';
 
-import type { ProductDocument } from '@/types/mongo';
+import type { ProductWriteDocument } from '@/types/mongo';
 
 const { BASE, SELL } = ENDPOINTS.PRODUCTS;
 
 describe(`POST "${SELL}"`, () => {
-    let product: ProductDocument;
+    let product: ProductWriteDocument;
+    let syncDataPublisher: jest.SpyInstance;
 
     beforeAll(async () => {
-        product = await ProductFactory.create({ stock: 100 });
+        product = await ProductFactory.create(true, { stock: 100 });
+        syncDataPublisher = jest.spyOn(Container.get<Publisher>('syncDataPublisher'), 'publish');
     });
 
     it('returns NO_CONTENT sending CORRECT DATA', async () => {
         const initialStock = product.stock;
-        const quantity = 10;
+        const quantity = 1;
 
         const { statusCode } = await request.post(`${BASE}/${product._id}/sell`).send({ quantity });
 
         expect(statusCode).toBe(StatusCodes.NO_CONTENT);
 
-        const { body } = await request.get(BASE);
-
-        expect(body).toContainMatchingObject({
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            stock: initialStock - quantity
+        expect(syncDataPublisher).toHaveBeenCalledTimes(1);
+        expect(syncDataPublisher).toHaveBeenCalledWith({
+            modelName: 'PRODUCT',
+            actionName: 'UPDATED',
+            data: expect.objectContaining({
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                stock: initialStock - quantity
+            })
         });
     });
 
@@ -42,13 +49,15 @@ describe(`POST "${SELL}"`, () => {
 
         expect(statusCode).toBe(StatusCodes.NO_CONTENT);
 
-        const { body } = await request.get(BASE);
-
-        expect(body).toContainMatchingObject({
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            stock: 0
+        expect(syncDataPublisher).toHaveBeenCalledWith({
+            modelName: 'PRODUCT',
+            actionName: 'UPDATED',
+            data: expect.objectContaining({
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                stock: 0
+            })
         });
     });
 

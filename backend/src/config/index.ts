@@ -44,13 +44,30 @@ export const config: IConfig = {
         keyExpiresInMinutes: parseInt(env('CACHE_KEY_EXPIRES_IN_MINUTES'))
     },
     mongo: {
-        url: `mongodb://${env('MONGO_USERNAME')}:${env('MONGO_PASSWORD')}@${env('MONGO_HOST')}:${env(
-            'MONGO_PORT'
+        writeUrl: `mongodb://${env('MONGO_USERNAME')}:${env('MONGO_PASSWORD')}@${env('MONGO_WRITE_HOST')}:${env(
+            'MONGO_WRITE_PORT'
+        )}/${env('MONGO_DATABASE')}?authSource=admin&directConnection=true`,
+        readUrl: `mongodb://${env('MONGO_USERNAME')}:${env('MONGO_PASSWORD')}@${env('MONGO_READ_HOST')}:${env(
+            'MONGO_READ_PORT'
         )}/${env('MONGO_DATABASE')}?authSource=admin&directConnection=true`,
         username: env('MONGO_USERNAME'),
         password: env('MONGO_PASSWORD'),
         database: env('MONGO_DATABASE'),
-        host: env('MONGO_HOST'),
-        port: parseInt(env('MONGO_PORT'))
+        writeHost: env('MONGO_WRITE_HOST'),
+        writePort: parseInt(env('MONGO_WRITE_PORT')),
+        readHost: env('MONGO_READ_HOST'),
+        readPort: parseInt(env('MONGO_READ_PORT'))
+    },
+    rabbitmq: {
+        url:
+            'amqp://' +
+            env('RABBITMQ_USER') +
+            ':' +
+            env('RABBITMQ_PASS') +
+            '@' +
+            env('RABBITMQ_HOST') +
+            ':' +
+            env('RABBITMQ_PORT'),
+        timeout: parseInt(env('RABBITMQ_TIMEOUT', '10000'))
     }
 };

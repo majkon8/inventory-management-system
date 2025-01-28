@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
 import { Inject, Service } from 'typedi';
 import { StatusCodes } from 'http-status-codes';
+import { Connection as MongooseConnection } from 'mongoose';
 
 import { RedisManager } from '@/services/redis/RedisManager';
-import { OrderRepository } from '@/repositories/OrderRepository';
-import { ProductQueryService } from '../query/ProductQuaryService';
+import { OrderWriteRepository } from '@/repositories/OrderWriteRepository';
+import { ProductQueryService } from '../queries/ProductQuaryService';
 
 import type { IOrderData } from '@/types/order';
 import type { ICacheRedis } from '@/types/redis';
@@ -14,8 +14,10 @@ export class OrderCommandService {
     constructor(
         @Inject('cacheManager')
         private readonly cacheManager: RedisManager<ICacheRedis>,
+        @Inject('mongooseRead')
+        private readonly mongoose: MongooseConnection,
         private readonly productQueryService: ProductQueryService,
-        private readonly orderRepository: OrderRepository
+        private readonly orderWriteRepository: OrderWriteRepository
     ) {}
 
     async placeOrder(data: IOrderData): Promise<{ status: number; message?: string }> {
@@ -33,7 +35,7 @@ export class OrderCommandService {
             return { status: StatusCodes.NOT_FOUND, message: "Some of your selected products don't exist!" };
         }
 
-        const session = await mongoose.startSession();
+        const session = await this.mongoose.startSession();
 
         try {
             session.startTransaction();
@@ -57,7 +59,7 @@ export class OrderCommandService {
                 await foundProduct.save({ session });
             }
 
-            await this.orderRepository.create({ customerId, products });
+            await this.orderWriteRepository.create({ customerId, products });
 
             await session.commitTransaction();
 
