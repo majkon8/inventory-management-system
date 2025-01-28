@@ -57,5 +57,17 @@ export const config: IConfig = {
         writePort: parseInt(env('MONGO_WRITE_PORT')),
         readHost: env('MONGO_READ_HOST'),
         readPort: parseInt(env('MONGO_READ_PORT'))
+    },
+    rabbitmq: {
+        url:
+            'amqp://' +
+            env('RABBITMQ_USER') +
+            ':' +
+            env('RABBITMQ_PASS') +
+            '@' +
+            env('RABBITMQ_HOST') +
+            ':' +
+            env('RABBITMQ_PORT'),
+        timeout: parseInt(env('RABBITMQ_TIMEOUT', '10000'))
     }
 };

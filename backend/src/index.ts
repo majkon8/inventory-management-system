@@ -3,11 +3,12 @@ import express, { Express, json, raw } from 'express';
 
 import { getRouter } from '@/routes';
 import { corsPlugin } from '@/plugins/cors';
+import { processType } from '@/enums/factories';
 import { errorHandler } from '@/plugins/errorHandler';
 import { initFactories } from '@/plugins/initFactories';
 
 export const getApp = async () => {
-    await initFactories();
+    await initFactories(processType.Api);
 
     const app: Express = express();
 

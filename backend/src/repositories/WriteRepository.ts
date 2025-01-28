@@ -30,4 +30,8 @@ export abstract class WriteRepository<M extends Model<T>, T> {
     updateMany(filter: FilterQuery<T>, data: UpdateQuery<T>) {
         return this.model.updateMany(filter, data);
     }
+
+    findOneAndUpdate(filter: FilterQuery<T>, data: UpdateQuery<T>, options?: QueryOptions) {
+        return this.model.findOneAndUpdate(filter, data, options);
+    }
 }

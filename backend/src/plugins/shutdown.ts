@@ -3,6 +3,7 @@ import { Connection as MongooseConnection } from 'mongoose';
 
 import { Logger } from '@/services/common/Logger';
 
+import type { Connection as amqplibConnection } from 'amqplib';
 import type { RedisScripts, RedisModules, RedisFunctions, RedisClientType } from 'redis';
 
 export const shutdown = async (killProcess = false, status = 0) => {
@@ -33,6 +34,19 @@ export const shutdown = async (killProcess = false, status = 0) => {
             Logger.info('MongoDB connection closed!');
         } catch {
             console.error('There was an error during shutting down mongoose connection!');
+        }
+    }
+
+    if (Container.has('rabbitMQConnection')) {
+        try {
+            Logger.info('Shutting down RabbitMQ connection...');
+
+            const rabbitMQConnection: amqplibConnection = Container.get('rabbitMQConnection');
+            await rabbitMQConnection.close();
+
+            Logger.info('RabbitMQ connection closed!');
+        } catch {
+            console.error('There was an error during shutting down queue connection!');
         }
     }
 

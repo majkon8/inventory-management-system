@@ -17,12 +17,12 @@ export const productWriteSchema = new Schema<IProductWrite>(
         price: {
             type: Number,
             required: true,
-            min: 0
+            min: [0, 'Price must be positive']
         },
         stock: {
             type: Number,
             required: true,
-            min: 0
+            min: [0, 'Price must be positive']
         }
     },
     {

@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { RedisManager } from '@/services/redis/RedisManager';
 import { OrderWriteRepository } from '@/repositories/OrderWriteRepository';
-import { ProductQueryService } from '../query/ProductQuaryService';
+import { ProductQueryService } from '../queries/ProductQuaryService';
 
 import type { IOrderData } from '@/types/order';
 import type { ICacheRedis } from '@/types/redis';

@@ -35,9 +35,15 @@ export interface IMongoConfig {
     readPort: number;
 }
 
+export interface IRabbitMQConfig {
+    url: string;
+    timeout: number;
+}
+
 export interface IConfig {
     app: IAppConfig;
     redisCache: IRedisConfig;
     cache: ICacheConfig;
     mongo: IMongoConfig;
+    rabbitmq: IRabbitMQConfig;
 }

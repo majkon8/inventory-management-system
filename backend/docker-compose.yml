@@ -4,6 +4,7 @@ volumes:
     mongodb_read.data:
     mongodb_read.config:
     redis_cache.data:
+    rabbitmq.data:
 
 services:
     redis_cache:
@@ -50,6 +51,27 @@ services:
             - mongodb_read.config:/data/configdb
         ports:
             - 127.0.0.1:${MONGO_READ_PORT}:27017
+        networks:
+            - network
+
+    rabbitmq:
+        image: ${COMPOSE_PROJECT_NAME}/rabbitmq
+        container_name: ${COMPOSE_PROJECT_NAME}.rabbitmq.docker
+        hostname: rabbitmq
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./rabbitmq.Dockerfile
+            args:
+                RABBITMQ_MANAGEMENT_PORT: ${RABBITMQ_MANAGEMENT_PORT}
+                VM_MEMORY_HIGH_WATERMARK_ABSOLUTE: ${RABBITMQ_VM_MEMORY_HIGH_WATERMARK_ABSOLUTE}
+                DISK_FREE_LIMIT_ABSOLUTE: ${RABBITMQ_DISK_FREE_LIMIT_ABSOLUTE}
+        env_file: envs/rabbitmq.env
+        volumes:
+            - rabbitmq.data:/var/lib/rabbitmq
+        ports:
+            - 127.0.0.1:${RABBITMQ_PORT}:${RABBITMQ_PORT}
+            - 127.0.0.1:${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}
         networks:
             - network
 
