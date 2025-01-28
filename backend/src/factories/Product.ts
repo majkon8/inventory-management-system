@@ -1,5 +1,6 @@
 import { Container } from 'typedi';
 import { faker } from '@faker-js/faker';
+import { Connection as MongooseConnection } from 'mongoose';
 
 import { ProductWriteRepository } from '@/repositories/ProductWriteRepository';
 
@@ -22,11 +23,20 @@ export class ProductFactory {
         return { ...defaultProps, ...props };
     }
 
-    static async create(props: Partial<IProductFactoryData> = {}) {
+    static async create(readFirst: boolean, props: Partial<IProductFactoryData> = {}) {
+        const mongooseRead: MongooseConnection = Container.get('mongooseRead');
         const productWriteRepository = Container.get(ProductWriteRepository);
 
         const productData = ProductFactory.generate(props);
 
-        return productWriteRepository.create(productData);
+        if (readFirst) {
+            await mongooseRead.models.ProductRead.create(productData);
+
+            return productWriteRepository.create(productData);
+        }
+
+        await productWriteRepository.create(productData);
+
+        return mongooseRead.models.ProductRead.create(productData);
     }
 }

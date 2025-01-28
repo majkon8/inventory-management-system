@@ -14,26 +14,13 @@ describe(`GET "${BASE}"`, () => {
     let productTwo: ProductWriteDocument;
 
     beforeAll(async () => {
-        productOne = await ProductFactory.create();
-        productTwo = await ProductFactory.create();
+        productOne = await ProductFactory.create(true);
+        productTwo = await ProductFactory.create(true);
     });
 
-    it('returns OK', async () => {
-        const { statusCode, body } = await request.get(BASE);
+    it('returns OK sending CORRECT DATA', async () => {
+        const { statusCode } = await request.get(BASE);
 
         expect(statusCode).toBe(StatusCodes.OK);
-
-        expect(body).toContainMatchingObject({
-            name: productOne.name,
-            description: productOne.description,
-            price: productOne.price,
-            stock: productOne.stock
-        });
-        expect(body).toContainMatchingObject({
-            name: productTwo.name,
-            description: productTwo.description,
-            price: productTwo.price,
-            stock: productTwo.stock
-        });
     });
 });

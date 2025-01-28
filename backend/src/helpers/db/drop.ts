@@ -9,18 +9,18 @@ const {
 export const drop = async () => {
     console.log('Drop script has started.');
 
-    const { connection: writeConnection } = await mongoose.connect(writeUrl, {
+    const writeConnection = mongoose.createConnection(writeUrl, {
         retryWrites: true,
         w: 'majority'
     });
 
-    const { connection: readConnection } = await mongoose.connect(readUrl, {
+    const readConnection = mongoose.createConnection(readUrl, {
         retryWrites: true,
         w: 'majority'
     });
 
-    await writeConnection.db?.dropDatabase();
-    await readConnection.db?.dropDatabase();
+    await writeConnection.dropDatabase();
+    await readConnection.dropDatabase();
 
     console.log('Database has been deleted by root.');
 

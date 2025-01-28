@@ -37,13 +37,13 @@ export abstract class Consumer {
         try {
             const item = JSON.parse(message.content.toString());
 
-            await this.processing(item);
+            this.processing(item);
 
-            await channel.ack(message);
+            channel.ack(message);
 
             Logger.info(`Consumer #${this.name} ${colors.green('acknowledged message')}!`);
         } catch (error: unknown) {
-            await channel.reject(message, false);
+            channel.reject(message, false);
 
             Logger.info(`Consumer #${this.name} ${colors.red('rejected message!')}!`);
 

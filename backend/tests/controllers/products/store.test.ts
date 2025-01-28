@@ -1,14 +1,18 @@
 import 'reflect-metadata';
 
+import Container from 'typedi';
 import { StatusCodes } from 'http-status-codes';
 
 import { ENDPOINTS } from '@tests/endpoints';
 import { ProductFactory } from '@/factories/Product';
+import { Publisher } from '@/services/queues/Publisher';
 
 const { BASE } = ENDPOINTS.PRODUCTS;
 
 describe(`POST "${BASE}"`, () => {
     it('returns CREATED sending CORRECT DATA', async () => {
+        const syncDataPublisher = jest.spyOn(Container.get<Publisher>('syncDataPublisher'), 'publish');
+
         const productData = ProductFactory.generate();
 
         const { statusCode, body } = await request.post(BASE).send(productData);
@@ -16,6 +20,18 @@ describe(`POST "${BASE}"`, () => {
         expect(statusCode).toBe(StatusCodes.CREATED);
 
         expect(body).toMatchObject(productData);
+
+        expect(syncDataPublisher).toHaveBeenCalledTimes(1);
+        expect(syncDataPublisher).toHaveBeenCalledWith({
+            modelName: 'PRODUCT',
+            actionName: 'CREATED',
+            data: expect.objectContaining({
+                name: body.name,
+                description: body.description,
+                price: body.price,
+                stock: body.stock
+            })
+        });
     });
 
     it('returns BAD_REQUEST sending NO DATA', async () => {

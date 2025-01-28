@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
 import { Inject, Service } from 'typedi';
 import { StatusCodes } from 'http-status-codes';
+import { Connection as MongooseConnection } from 'mongoose';
 
 import { RedisManager } from '@/services/redis/RedisManager';
 import { OrderWriteRepository } from '@/repositories/OrderWriteRepository';
@@ -14,6 +14,8 @@ export class OrderCommandService {
     constructor(
         @Inject('cacheManager')
         private readonly cacheManager: RedisManager<ICacheRedis>,
+        @Inject('mongooseRead')
+        private readonly mongoose: MongooseConnection,
         private readonly productQueryService: ProductQueryService,
         private readonly orderWriteRepository: OrderWriteRepository
     ) {}
@@ -33,7 +35,7 @@ export class OrderCommandService {
             return { status: StatusCodes.NOT_FOUND, message: "Some of your selected products don't exist!" };
         }
 
-        const session = await mongoose.startSession();
+        const session = await this.mongoose.startSession();
 
         try {
             session.startTransaction();

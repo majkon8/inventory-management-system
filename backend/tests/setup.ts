@@ -2,6 +2,7 @@ import { agent, type SuperAgentTest } from 'supertest';
 
 import { getApp } from '@/index';
 import { shutdown } from '@/plugins/shutdown';
+import { Publisher } from '@/services/queues/Publisher';
 
 jest.setTimeout(20000);
 
@@ -39,6 +40,8 @@ beforeAll(async () => {
                 (target as any)[prop](...args).set('csrf-token', target.csrfTokens?.[0] || '');
         }
     });
+
+    jest.spyOn(Publisher.prototype, 'publish').mockImplementation();
 });
 
 afterAll(async () => {

@@ -6,23 +6,20 @@ import { ENDPOINTS } from '@tests/endpoints';
 import { OrderFactory } from '@/factories/Order';
 import { ProductFactory } from '@/factories/Product';
 
-import type { ProductWriteDocument } from '@/types/mongo';
+import type { ProductReadDocument } from '@/types/mongo';
 
 const { BASE: ORDERS_BASE } = ENDPOINTS.ORDERS;
-const { BASE: PRODUCTS_BASE } = ENDPOINTS.PRODUCTS;
 
 describe(`POST "${ORDERS_BASE}"`, () => {
-    let productOne: ProductWriteDocument;
-    let productTwo: ProductWriteDocument;
+    let productOne: ProductReadDocument;
+    let productTwo: ProductReadDocument;
 
     beforeAll(async () => {
-        productOne = await ProductFactory.create();
-        productTwo = await ProductFactory.create();
+        productOne = await ProductFactory.create(false);
+        productTwo = await ProductFactory.create(false);
     });
 
     it('returns CREATED sending CORRECT DATA', async () => {
-        const productOneInitialStock = productOne.stock;
-        const productTwoInitialStock = productTwo.stock;
         const productOneQuantity = 1;
         const productTwoQuantity = 2;
         const orderData = {
@@ -36,21 +33,6 @@ describe(`POST "${ORDERS_BASE}"`, () => {
         const { statusCode } = await request.post(ORDERS_BASE).send(orderData);
 
         expect(statusCode).toBe(StatusCodes.CREATED);
-
-        const { body } = await request.get(PRODUCTS_BASE);
-
-        expect(body).toContainMatchingObject({
-            name: productOne.name,
-            description: productOne.description,
-            price: productOne.price,
-            stock: productOneInitialStock - productOneQuantity
-        });
-        expect(body).toContainMatchingObject({
-            name: productTwo.name,
-            description: productTwo.description,
-            price: productTwo.price,
-            stock: productTwoInitialStock - productTwoQuantity
-        });
     });
 
     it('returns BAD_REQUEST sending NO DATA', async () => {

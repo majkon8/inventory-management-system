@@ -21,7 +21,7 @@ export const shutdown = async (killProcess = false, status = 0) => {
         }
     }
 
-    if (Container.has('mongoose')) {
+    if (Container.has('mongooseWrite') || Container.has('mongooseRead')) {
         try {
             Logger.info('Shutting down MongoDB connection...');
 
