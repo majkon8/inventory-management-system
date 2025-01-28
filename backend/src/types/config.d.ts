@@ -24,9 +24,15 @@ export interface IMongoConfig {
     username: string;
     password: string;
     database: string;
-    host: string;
-    port: number;
-    url: string;
+    writeUrl: string;
+    readUrl: string;
+    username: string;
+    password: string;
+    database: string;
+    writeHost: string;
+    writePort: number;
+    readHost: string;
+    readPort: number;
 }
 
 export interface IConfig {

@@ -1,7 +1,7 @@
 import { Container } from 'typedi';
 import { faker } from '@faker-js/faker';
 
-import { ProductRepository } from '@/repositories/ProductRepository';
+import { ProductWriteRepository } from '@/repositories/ProductWriteRepository';
 
 import type { IProductFactoryData } from '@/types/factories';
 
@@ -23,10 +23,10 @@ export class ProductFactory {
     }
 
     static async create(props: Partial<IProductFactoryData> = {}) {
-        const productRepository = Container.get(ProductRepository);
+        const productWriteRepository = Container.get(ProductWriteRepository);
 
         const productData = ProductFactory.generate(props);
 
-        return productRepository.create(productData);
+        return productWriteRepository.create(productData);
     }
 }

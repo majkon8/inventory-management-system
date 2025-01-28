@@ -1,9 +1,9 @@
 import { Inject, Service } from 'typedi';
 
 import { RedisManager } from '@/services/redis/RedisManager';
-import { ProductRepository } from '@/repositories/ProductRepository';
+import { ProductWriteRepository } from '@/repositories/ProductWriteRepository';
 
-import type { IProduct } from '@/types/mongo';
+import type { IProductWrite } from '@/types/mongo';
 import type { ICacheRedis } from '@/types/redis';
 
 @Service()
@@ -11,11 +11,11 @@ export class ProductCommandService {
     constructor(
         @Inject('cacheManager')
         private readonly cacheManager: RedisManager<ICacheRedis>,
-        private readonly productRepository: ProductRepository
+        private readonly productWriteRepository: ProductWriteRepository
     ) {}
 
-    async createProduct(data: Partial<IProduct>) {
-        const createdProduct = await this.productRepository.create(data);
+    async createProduct(data: Partial<IProductWrite>) {
+        const createdProduct = await this.productWriteRepository.create(data);
 
         await this.cacheManager.forgetByPattern(`products:index`);
 
@@ -23,7 +23,7 @@ export class ProductCommandService {
     }
 
     async restockProduct(productId: string, quantity: number): Promise<boolean> {
-        const { matchedCount } = await this.productRepository.updateOne(
+        const { matchedCount } = await this.productWriteRepository.updateOne(
             { _id: productId },
             { $inc: { stock: quantity } }
         );
@@ -38,7 +38,7 @@ export class ProductCommandService {
     }
 
     async sellProduct(productId: string, quantity: number): Promise<boolean> {
-        const { matchedCount } = await this.productRepository.updateOne({ _id: productId }, [
+        const { matchedCount } = await this.productWriteRepository.updateOne({ _id: productId }, [
             {
                 $set: {
                     stock: {

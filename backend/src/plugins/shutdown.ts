@@ -24,8 +24,11 @@ export const shutdown = async (killProcess = false, status = 0) => {
         try {
             Logger.info('Shutting down MongoDB connection...');
 
-            const mongoose: MongooseConnection = Container.get('mongoose');
-            await mongoose.destroy();
+            const mongooseWrite: MongooseConnection = Container.get('mongooseWrite');
+            const mongooseRead: MongooseConnection = Container.get('mongooseRead');
+
+            await mongooseWrite.destroy();
+            await mongooseRead.destroy();
 
             Logger.info('MongoDB connection closed!');
         } catch {

@@ -14,16 +14,23 @@ interface BaseDocument {
     updatedAt: Date;
 }
 
-export interface IProduct extends BaseDocument {
+interface IProductCommon extends BaseDocument {
     name: string;
     description: string;
     price: number;
     stock: number;
 }
 
-export type ProductDocument = IProduct & Document;
+export interface IProductWrite extends IProductCommon {}
+export interface IProductRead extends IProductCommon {}
 
-export interface IOrder extends BaseDocument {
+type ProductCommonDocument = IProductCommon & Document;
+type ProductWriteDocument = ProductCommonDocument;
+type ProductReadDocument = ProductCommonDocument;
+
+export interface IOrderCommon extends BaseDocument {
     customerId: string;
     products: IProductOrderData[];
 }
+
+export interface IOrderWrite extends IOrderCommon {}

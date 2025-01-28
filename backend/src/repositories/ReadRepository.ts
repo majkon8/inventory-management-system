@@ -1,26 +1,17 @@
 import { Inject, Service } from 'typedi';
 
-import type {
-    Connection,
-    Model,
-    SortOrder,
-    FilterQuery,
-    QueryOptions,
-    MongooseBaseQueryOptionKeys,
-    Types,
-    UpdateQuery
-} from 'mongoose';
 import type { IFlattenObjectKeys, IPrefixMongoSelectKeys } from '@/types/mongo';
+import type { Connection, Model, SortOrder, FilterQuery, Types } from 'mongoose';
 
 type IProjectionValue<T> =
     | Partial<Record<IFlattenObjectKeys<T>, 1 | 0>>
     | Array<IPrefixMongoSelectKeys<IFlattenObjectKeys<T>> | '_id'>;
 
 @Service()
-export abstract class Repository<M extends Model<T>, T> {
+export abstract class ReadRepository<M extends Model<T>, T> {
     constructor(
-        @Inject('mongoose')
-        protected readonly mongoose: Connection
+        @Inject('mongooseRead')
+        protected readonly mongooseRead: Connection
     ) {}
 
     abstract get model(): M;
@@ -90,29 +81,5 @@ export abstract class Repository<M extends Model<T>, T> {
 
     count(options: FilterQuery<T> = {}) {
         return this.model.countDocuments(options);
-    }
-
-    create(data: Partial<T>) {
-        return this.model.create(data);
-    }
-
-    bulkCreate(documents: Partial<T>[]) {
-        return this.model.insertMany(documents);
-    }
-
-    deleteOne(query: FilterQuery<T>, options?: Pick<QueryOptions<T>, MongooseBaseQueryOptionKeys>) {
-        return this.model.deleteOne(query, options);
-    }
-
-    updateOne(filter: FilterQuery<T>, data: UpdateQuery<T>) {
-        return this.model.updateOne(filter, data);
-    }
-
-    findOneAndUpdate(filter: FilterQuery<T>, data: UpdateQuery<T>, options?: QueryOptions) {
-        return this.model.findOneAndUpdate(filter, data, options);
-    }
-
-    updateMany(filter: FilterQuery<T>, data: UpdateQuery<T>) {
-        return this.model.updateMany(filter, data);
     }
 }

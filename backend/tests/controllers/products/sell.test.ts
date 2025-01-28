@@ -5,12 +5,12 @@ import { StatusCodes } from 'http-status-codes';
 import { ENDPOINTS } from '@tests/endpoints';
 import { ProductFactory } from '@/factories/Product';
 
-import type { ProductDocument } from '@/types/mongo';
+import type { ProductWriteDocument } from '@/types/mongo';
 
 const { BASE, SELL } = ENDPOINTS.PRODUCTS;
 
 describe(`POST "${SELL}"`, () => {
-    let product: ProductDocument;
+    let product: ProductWriteDocument;
 
     beforeAll(async () => {
         product = await ProductFactory.create({ stock: 100 });

@@ -3,7 +3,7 @@ import { Inject, Service } from 'typedi';
 import { StatusCodes } from 'http-status-codes';
 
 import { RedisManager } from '@/services/redis/RedisManager';
-import { OrderRepository } from '@/repositories/OrderRepository';
+import { OrderWriteRepository } from '@/repositories/OrderWriteRepository';
 import { ProductQueryService } from '../query/ProductQuaryService';
 
 import type { IOrderData } from '@/types/order';
@@ -15,7 +15,7 @@ export class OrderCommandService {
         @Inject('cacheManager')
         private readonly cacheManager: RedisManager<ICacheRedis>,
         private readonly productQueryService: ProductQueryService,
-        private readonly orderRepository: OrderRepository
+        private readonly orderWriteRepository: OrderWriteRepository
     ) {}
 
     async placeOrder(data: IOrderData): Promise<{ status: number; message?: string }> {
@@ -57,7 +57,7 @@ export class OrderCommandService {
                 await foundProduct.save({ session });
             }
 
-            await this.orderRepository.create({ customerId, products });
+            await this.orderWriteRepository.create({ customerId, products });
 
             await session.commitTransaction();
 

@@ -1,6 +1,8 @@
 volumes:
-    mongodb.data:
-    mongodb.config:
+    mongodb_write.data:
+    mongodb_write.config:
+    mongodb_read.data:
+    mongodb_read.config:
     redis_cache.data:
 
 services:
@@ -19,19 +21,35 @@ services:
         networks:
             - network
 
-    mongodb:
-        image: ${COMPOSE_PROJECT_NAME}/mongodb
-        container_name: ${COMPOSE_PROJECT_NAME}.mongodb.docker
+    mongodb_write:
+        image: ${COMPOSE_PROJECT_NAME}/mongodb_write
+        container_name: ${COMPOSE_PROJECT_NAME}.mongodb_write.docker
         restart: unless-stopped
         build:
             context: .
             dockerfile: ./mongo.Dockerfile
-        env_file: envs/mongo.env
+        env_file: envs/mongo_write.env
         volumes:
-            - mongodb.data:/data/db
-            - mongodb.config:/data/configdb
+            - mongodb_write.data:/data/db
+            - mongodb_write.config:/data/configdb
         ports:
-            - 127.0.0.1:${MONGO_PORT}:27017
+            - 127.0.0.1:${MONGO_WRITE_PORT}:27017
+        networks:
+            - network
+
+    mongodb_read:
+        image: ${COMPOSE_PROJECT_NAME}/mongodb_read
+        container_name: ${COMPOSE_PROJECT_NAME}.mongodb_read.docker
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./mongo.Dockerfile
+        env_file: envs/mongo_read.env
+        volumes:
+            - mongodb_read.data:/data/db
+            - mongodb_read.config:/data/configdb
+        ports:
+            - 127.0.0.1:${MONGO_READ_PORT}:27017
         networks:
             - network
 
