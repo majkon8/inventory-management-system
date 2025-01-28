@@ -33,7 +33,7 @@ Follow steps listed below for installation.
 
 You can run backend with `npm run dev`.
 
-!IMPORTANT 
+!IMPORTANT \
 Queues are necessary for read and write databases to sync so you also have to run `npm run queues`.
 
 ## Tests
@@ -48,29 +48,29 @@ Queues are necessary for read and write databases to sync so you also have to ru
 
 GET /api/products - Get all products
 
-POST /api/products - Create product
-{
-    "name": string,
-    "description": string,
-    "price": number,
-    "stock": number
+POST /api/products - Create product \
+{ \
+    "name": string, \
+    "description": string, \
+    "price": number, \
+    "stock": number \
 }
 
-POST /api/products/<productId>/restock - Increase product stock
-{
-    "quantity": number
+POST /api/products/:productId/restock - Increase product stock \
+{ \
+    "quantity": number \
 }
 
-POST /api/products/<productId>/sell - Decrease product stock
-{
-    "quantity": number
+POST /api/products/:productId/sell - Decrease product stock \
+{ \
+    "quantity": number \
 }
 
-POST /api/orders - Create order
-{
-    "customerId": string,
-    "products": Array<{
-        "id": string,
-        "quantity": number
+POST /api/orders - Create order \
+{ \
+    "customerId": string, \
+    "products": Array<{ \
+        "id": string, \
+        "quantity": number \
     }>
 }
