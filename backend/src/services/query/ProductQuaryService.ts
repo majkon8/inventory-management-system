@@ -3,8 +3,8 @@ import { Inject, Service } from 'typedi';
 import { RedisManager } from '@/services/redis/RedisManager';
 import { ProductRepository } from '@/repositories/ProductRepository';
 
-import type { ProductDocument } from '@/types/mongo';
 import type { ICacheRedis } from '@/types/redis';
+import type { ProductDocument } from '@/types/mongo';
 
 @Service()
 export class ProductQueryService {

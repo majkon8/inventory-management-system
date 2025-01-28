@@ -1,8 +1,8 @@
 import { Container } from 'typedi';
 import { Router, Request, Response } from 'express';
 
-import { store, restockAndSell } from '@/validators/product';
 import { validate } from '@/middlewares/validate';
+import { store, restockAndSell } from '@/validators/product';
 import { SellController } from '@/controllers/Product/SellController';
 import { IndexController } from '@/controllers/Product/IndexController';
 import { StoreController } from '@/controllers/Product/StoreController';

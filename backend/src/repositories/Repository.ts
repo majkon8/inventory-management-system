@@ -1,6 +1,5 @@
 import { Inject, Service } from 'typedi';
 
-import type { IFlattenObjectKeys, IPrefixMongoSelectKeys } from '@/types/mongo';
 import type {
     Connection,
     Model,
@@ -11,6 +10,7 @@ import type {
     Types,
     UpdateQuery
 } from 'mongoose';
+import type { IFlattenObjectKeys, IPrefixMongoSelectKeys } from '@/types/mongo';
 
 type IProjectionValue<T> =
     | Partial<Record<IFlattenObjectKeys<T>, 1 | 0>>

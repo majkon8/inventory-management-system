@@ -1,5 +1,5 @@
-import { Response } from 'express';
 import { Service } from 'typedi';
+import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { ProductCommandService } from '@/services/command/ProductCommandService';
