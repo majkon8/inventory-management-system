@@ -1,0 +1,51 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "perfectionist"],
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
+    "rules": {
+        "no-unused-vars": ["off"],
+        "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+        "import/no-unresolved": ["error", { "ignore": ["^virtual:"] }],
+        "padding-line-between-statements": [
+            "error",
+            { "blankLine": "always", "prev": "*", "next": "return" },
+            { "blankLine": "always", "prev": "*", "next": "continue" },
+            { "blankLine": "always", "prev": "*", "next": "if" },
+            { "blankLine": "always", "prev": "if", "next": "*" },
+            { "blankLine": "always", "prev": "*", "next": "for" },
+            { "blankLine": "always", "prev": "for", "next": "*" },
+            { "blankLine": "always", "prev": "*", "next": "while" },
+            { "blankLine": "always", "prev": "while", "next": "*" },
+            { "blankLine": "always", "prev": "*", "next": "switch" },
+            { "blankLine": "always", "prev": "switch", "next": "*" }
+        ],
+        "perfectionist/sort-imports": [
+            "error",
+            {
+                "type": "line-length",
+                "order": "asc",
+                "newlines-between": "always",
+                "max-line-length": 120,
+                "groups": [
+                    "side-effect",
+                    ["builtin", "external"],
+                    ["parent", "sibling", "index", "internal"],
+                    "object",
+                    ["type", "internal-type", "parent-type", "sibling-type", "index-type"],
+                    "unknown"
+                ],
+                "internal-pattern": ["@/**", "@tests/**"]
+            }
+        ]
+    }
+}
