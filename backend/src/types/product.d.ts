@@ -1,12 +1,12 @@
 import type { Request } from 'express';
-import type { Product } from '@/models/Product';
+import type { IProduct } from '@/types/mongo';
 
 export interface IStoreRequest extends Request {
-    body: Product;
+    body: IProduct;
 }
 
 export interface IRestockAndSellRequest extends Request {
     body: {
-        value: number;
+        quantity: number;
     };
 }

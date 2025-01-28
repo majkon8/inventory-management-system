@@ -19,14 +19,14 @@ export class SellController {
     async invoke(request: IRestockAndSellRequest, response: Response) {
         const {
             params: { id },
-            body: { value }
+            body: { quantity }
         } = request;
 
         const { matchedCount } = await this.productRepository.updateOne({ _id: id }, [
             {
                 $set: {
                     stock: {
-                        $max: [{ $add: ['$stock', -value] }, 0]
+                        $max: [{ $add: ['$stock', -quantity] }, 0]
                     }
                 }
             }
