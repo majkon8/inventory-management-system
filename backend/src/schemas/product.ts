@@ -14,7 +14,6 @@ export const productSchema = new Schema<IProduct>(
             required: true,
             maxLength: 50
         },
-        // price in cents
         price: {
             type: Number,
             required: true,

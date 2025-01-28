@@ -18,7 +18,7 @@ export const store = [
 ];
 
 export const restockAndSell = [
-    body('value')
+    body('quantity')
         .notEmpty()
         .withMessage('Should not be empty!')
         .bail()

@@ -46,7 +46,7 @@ export const config: IConfig = {
     mongo: {
         url: `mongodb://${env('MONGO_USERNAME')}:${env('MONGO_PASSWORD')}@${env('MONGO_HOST')}:${env(
             'MONGO_PORT'
-        )}/${env('MONGO_DATABASE')}?authSource=admin`,
+        )}/${env('MONGO_DATABASE')}?authSource=admin&directConnection=true`,
         username: env('MONGO_USERNAME'),
         password: env('MONGO_PASSWORD'),
         database: env('MONGO_DATABASE'),

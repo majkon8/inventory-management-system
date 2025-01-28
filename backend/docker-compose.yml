@@ -1,5 +1,6 @@
 volumes:
-    mongo.data:
+    mongodb.data:
+    mongodb.config:
     redis_cache.data:
 
 services:
@@ -18,18 +19,19 @@ services:
         networks:
             - network
 
-    mongo:
-        image: ${COMPOSE_PROJECT_NAME}/mongo
-        container_name: ${COMPOSE_PROJECT_NAME}.mongo.docker
+    mongodb:
+        image: ${COMPOSE_PROJECT_NAME}/mongodb
+        container_name: ${COMPOSE_PROJECT_NAME}.mongodb.docker
         restart: unless-stopped
         build:
             context: .
             dockerfile: ./mongo.Dockerfile
         env_file: envs/mongo.env
         volumes:
-            - mongo.data:/data/db
+            - mongodb.data:/data/db
+            - mongodb.config:/data/configdb
         ports:
-            - 127.0.0.1:${MONGO_PORT}:${MONGO_PORT}
+            - 127.0.0.1:${MONGO_PORT}:27017
         networks:
             - network
 

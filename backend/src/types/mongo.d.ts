@@ -7,6 +7,7 @@ export type IFlattenObjectKeys<T, Key = keyof T> = Key extends string
 export type IPrefixMongoSelectKeys<T extends string> = T extends `${infer U}` ? `-${U}` | `+${U}` | U : never;
 
 interface BaseDocument {
+    _id: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -16,4 +17,9 @@ export interface IProduct extends BaseDocument {
     description: string;
     price: number;
     stock: number;
+}
+
+export interface IOrder extends BaseDocument {
+    customerId: string;
+    products: IProductOrderData[];
 }

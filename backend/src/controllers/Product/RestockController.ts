@@ -19,10 +19,10 @@ export class RestockController {
     async invoke(request: IRestockAndSellRequest, response: Response) {
         const {
             params: { id },
-            body: { value }
+            body: { quantity }
         } = request;
 
-        const { matchedCount } = await this.productRepository.updateOne({ _id: id }, { $inc: { stock: value } });
+        const { matchedCount } = await this.productRepository.updateOne({ _id: id }, { $inc: { stock: quantity } });
 
         if (matchedCount === 0) {
             return response.sendStatus(StatusCodes.NOT_FOUND);
