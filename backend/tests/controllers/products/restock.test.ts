@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import Container from 'typedi';
+import { Container } from 'typedi';
 import { StatusCodes } from 'http-status-codes';
 
 import { ENDPOINTS } from '@tests/endpoints';

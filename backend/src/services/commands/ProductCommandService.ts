@@ -6,8 +6,8 @@ import { RedisManager } from '@/services/redis/RedisManager';
 import { ProductWriteRepository } from '@/repositories/ProductWriteRepository';
 import { SyncDataConsumer } from '@/services/queues/consumers/SyncDataConsumer';
 
-import type { IProductWrite } from '@/types/mongo';
 import type { ICacheRedis } from '@/types/redis';
+import type { IProductWrite } from '@/types/mongo';
 
 @Service()
 export class ProductCommandService {

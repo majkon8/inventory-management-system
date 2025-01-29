@@ -1,9 +1,8 @@
 import { Channel } from 'amqplib';
 import { Container, Service } from 'typedi';
 
-import { Consumer } from '@/services/queues/Consumer';
-
 import { model, action } from '@/enums/syncData';
+import { Consumer } from '@/services/queues/Consumer';
 
 import type { Connection } from 'mongoose';
 import type { ISyncDataConsumerOptions } from '@/types/syncData';
